@@ -1,5 +1,6 @@
 package com.soramitsukhmer.contactmanagement.service
 
+import com.soramitsukhmer.contactmanagement.api.exception.IDNotFoundException
 import com.soramitsukhmer.contactmanagement.api.request.CompanyDTO
 import com.soramitsukhmer.contactmanagement.api.request.RequestCompanyDTO
 import com.soramitsukhmer.contactmanagement.domain.model.Company
@@ -12,9 +13,7 @@ class CompanyService(
         val companyRepository: CompanyRepository
 ){
     fun listAllCompanies() : List<CompanyDTO>{
-        return companyRepository.findAll().map {
-            it.toDTO()
-        }
+        return companyRepository.findAll().map { it.toDTO() }
     }
 
     fun getCompany(id: Long) : CompanyDTO{
@@ -33,5 +32,13 @@ class CompanyService(
             throw RuntimeException("CompanyId[$id] is not found.")
         }.updateCompany(reqCompanyDTO)
         return companyRepository.save(company).toDTO()
+    }
+
+    fun deleteCompany(id: Long) : String{
+        val company = companyRepository.findById(id).orElseThrow{
+            throw IDNotFoundException("CompanyId[$id] is not found.")
+        }
+        companyRepository.delete(company)
+        return "DELETED"
     }
 }

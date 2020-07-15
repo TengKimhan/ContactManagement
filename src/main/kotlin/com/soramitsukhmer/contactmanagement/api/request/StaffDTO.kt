@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull
 data class StaffDTO(
         var id : Long,
         var name: String,
-        var position: String,
+        var position: String?,
         var company: CompanyDTO,
         @JsonFormat(pattern = Constants.DATETIME_FORMAT)
         val createdAt: LocalDateTime,

@@ -31,4 +31,9 @@ class CompanyController(
     fun updateCompany(@PathVariable id: Long, @Valid @RequestBody requestCompanyDTO: RequestCompanyDTO) : ResponseEntity<CompanyDTO>{
         return ResponseEntity.ok(companyService.updateCompany(id, requestCompanyDTO))
     }
+
+    @DeleteMapping("/{id}")
+    fun deleteCompany(@PathVariable id: Long) : ResponseEntity<String>{
+        return ResponseEntity.ok(companyService.deleteCompany(id))
+    }
 }
