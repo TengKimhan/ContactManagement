@@ -15,6 +15,10 @@ data class Staff(
         val id : Long = 0,
         @Column(name = "name")
         var name: String,
+        @Column(name = "gender")
+        var gender: String,
+        @Column(name = "location")
+        var location: String?,
         @Column(name = "position")
         var position: String?,
         @CreationTimestamp
@@ -33,6 +37,8 @@ data class Staff(
             name = name,
             position = position,
             company = company.toDTO(),
+            gender = gender,
+            location = location,
             createdAt = createdAt,
             updatedAt = updatedAt
     )
@@ -41,6 +47,8 @@ data class Staff(
         return this.apply {
             name = reqStaffDTO.name
             position = reqStaffDTO.position
+            gender = reqStaffDTO.gender
+            location = reqStaffDTO.location
             this.company = company
         }
     }
@@ -48,7 +56,9 @@ data class Staff(
     companion object{
         fun fromReqDTO(reqStaffDTO: RequestStaffDTO, company: Company) = Staff(
                 name = reqStaffDTO.name,
-                position = reqStaffDTO.position
+                position = reqStaffDTO.position,
+                gender = reqStaffDTO.gender,
+                location = reqStaffDTO.location
         ).apply { this.company = company }
     }
 }

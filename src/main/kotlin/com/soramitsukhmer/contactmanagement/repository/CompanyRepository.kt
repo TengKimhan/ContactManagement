@@ -6,5 +6,4 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.PagingAndSortingRepository
 
 interface CompanyRepository : CrudRepository<Company, Long>, PagingAndSortingRepository<Company, Long>{
-    fun find
 }

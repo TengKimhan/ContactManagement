@@ -2,9 +2,11 @@ package com.soramitsukhmer.contactmanagement.service
 
 import com.soramitsukhmer.contactmanagement.api.exception.IDNotFoundException
 import com.soramitsukhmer.contactmanagement.api.request.CompanyDTO
+import com.soramitsukhmer.contactmanagement.api.request.FilterParamsStaffDTO
 import com.soramitsukhmer.contactmanagement.api.request.RequestCompanyDTO
 import com.soramitsukhmer.contactmanagement.domain.model.Company
 import com.soramitsukhmer.contactmanagement.repository.CompanyRepository
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import java.lang.RuntimeException
 

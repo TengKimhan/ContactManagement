@@ -1,8 +1,11 @@
 package com.soramitsukhmer.contactmanagement.api.controller
 
+import com.soramitsukhmer.contactmanagement.api.request.FilterParamsStaffDTO
 import com.soramitsukhmer.contactmanagement.api.request.RequestStaffDTO
 import com.soramitsukhmer.contactmanagement.api.request.StaffDTO
 import com.soramitsukhmer.contactmanagement.service.StaffService
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
@@ -13,8 +16,9 @@ class StaffController(
         val staffService: StaffService
 ){
     @GetMapping
-    fun listAllStaffs() : ResponseEntity<List<StaffDTO>>{
-        return ResponseEntity.ok(staffService.listAllStaffs())
+    fun listAllStaffs(@RequestParam filterParamsStaffDTO: FilterParamsStaffDTO?,
+                      pageable: Pageable) : ResponseEntity<Page<StaffDTO>>{
+        return ResponseEntity.ok(staffService.listAllStaffs(filterParamsStaffDTO, pageable))
     }
 
     @GetMapping("/{id}")

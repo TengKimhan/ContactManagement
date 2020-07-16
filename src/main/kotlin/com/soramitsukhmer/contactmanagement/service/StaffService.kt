@@ -1,10 +1,15 @@
 package com.soramitsukhmer.contactmanagement.service
 
+import com.soramitsukhmer.contactmanagement.api.request.FilterParamsStaffDTO
 import com.soramitsukhmer.contactmanagement.api.request.RequestStaffDTO
 import com.soramitsukhmer.contactmanagement.api.request.StaffDTO
 import com.soramitsukhmer.contactmanagement.domain.model.Staff
+import com.soramitsukhmer.contactmanagement.domain.spec.StaffSpec
 import com.soramitsukhmer.contactmanagement.repository.CompanyRepository
 import com.soramitsukhmer.contactmanagement.repository.StaffRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
 import java.lang.RuntimeException
 
@@ -13,8 +18,13 @@ class StaffService(
         val staffRepository: StaffRepository,
         val companyRepository: CompanyRepository
 ){
-    fun listAllStaffs() : List<StaffDTO>{
-        return staffRepository.findAll().map { it.toDTO() }
+    fun listAllStaffs(filterParamsStaffDTO: FilterParamsStaffDTO?, pageable: Pageable) : Page<StaffDTO> {
+        val querySpec = filterParamsStaffDTO?.q?.let { StaffSpec.genSearchSpec(it.toLowerCase()) }
+        val companySpec = filterParamsStaffDTO?.companyId?.let { StaffSpec.genFilterCompany(it) }
+        return staffRepository.findAll(
+                Specification.where(companySpec)?.and(querySpec),
+                pageable
+        ).map{ it.toDTO() }
     }
 
     fun getStaff(id : Long) : StaffDTO{

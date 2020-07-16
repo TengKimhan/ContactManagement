@@ -1,8 +1,10 @@
 package com.soramitsukhmer.contactmanagement.api.controller
 
 import com.soramitsukhmer.contactmanagement.api.request.CompanyDTO
+import com.soramitsukhmer.contactmanagement.api.request.FilterParamsStaffDTO
 import com.soramitsukhmer.contactmanagement.api.request.RequestCompanyDTO
 import com.soramitsukhmer.contactmanagement.service.CompanyService
+import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
