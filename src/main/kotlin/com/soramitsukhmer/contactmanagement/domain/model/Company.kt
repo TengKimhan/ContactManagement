@@ -27,31 +27,38 @@ data class Company(
         @Column(name = "updated_at")
         var updatedAt: LocalDateTime = LocalDateTime.now()
 ){
+
+        @ManyToOne
+        @JoinColumn(name = "status_id")
+        lateinit var status: Status
+
         fun toDTO() = CompanyDTO(
                 id = id,
                 name = name,
                 phone = phone,
                 webUrl = webUrl,
                 createdAt = createdAt,
-                updatedAt = updatedAt
+                updatedAt = updatedAt,
+                status = status.toDTO()
         )
 
-        fun updateCompany(reqCompanyDTO: RequestCompanyDTO) : Company{
+        fun updateCompany(reqCompanyDTO: RequestCompanyDTO, status: Status) : Company{
                 return this.apply {
                         name = reqCompanyDTO.name
                         phone = reqCompanyDTO.phone
                         webUrl = reqCompanyDTO.webUrl
+                        this.status = status
                 }
         }
 
         companion object{
-                fun fromReqDTO(reqCompanyDTO: RequestCompanyDTO) : Company{
+                fun fromReqDTO(reqCompanyDTO: RequestCompanyDTO, status: Status) : Company{
                         return Company(
                                 name = reqCompanyDTO.name,
                                 phone = reqCompanyDTO.phone,
                                 webUrl = reqCompanyDTO.webUrl,
                                 privatePassPhrase = "SORA"
-                        )
+                        ).apply { this.status = status }
                 }
         }
 }

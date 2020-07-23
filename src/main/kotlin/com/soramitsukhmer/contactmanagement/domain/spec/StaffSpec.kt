@@ -2,6 +2,7 @@ package com.soramitsukhmer.contactmanagement.domain.spec
 
 import com.soramitsukhmer.contactmanagement.domain.model.Company
 import com.soramitsukhmer.contactmanagement.domain.model.Staff
+import com.soramitsukhmer.contactmanagement.domain.model.Status
 import org.springframework.data.jpa.domain.Specification
 import java.time.LocalDateTime
 import javax.persistence.criteria.JoinType
@@ -23,6 +24,13 @@ class StaffSpec {
             return Specification { root, _, criteriaBuilder ->
                 val company = root.join<Staff, Company>(Staff::company.name, JoinType.INNER)
                 criteriaBuilder.equal(company.get<Long>(Company::id.name), companyId)
+            }
+        }
+
+        fun genFilterStatus(statusID : Long) : Specification<Staff>? {
+            return Specification { root, _, criteriaBuilder ->
+                val status = root.join<Staff, Status>(Staff::status.name, JoinType.INNER)
+                criteriaBuilder.equal(status.get<Long>(Status::id.name), statusID)
             }
         }
     }

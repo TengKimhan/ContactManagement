@@ -1,6 +1,5 @@
 package com.soramitsukhmer.contactmanagement.domain.model
 
-import com.soramitsukhmer.contactmanagement.api.request.CompanyDTO
 import com.soramitsukhmer.contactmanagement.api.request.RequestStaffDTO
 import com.soramitsukhmer.contactmanagement.api.request.StaffDTO
 import org.hibernate.annotations.CreationTimestamp
@@ -32,33 +31,49 @@ data class Staff(
     @JoinColumn(name = "company_id")
     lateinit var company: Company
 
+    @ManyToOne
+    @JoinColumn(name = "status_id")
+    lateinit var status: Status
+
     fun toDTO() = StaffDTO(
             id = id,
             name = name,
             position = position,
             company = company.toDTO(),
+            status = status.toDTO(),
             gender = gender,
             location = location,
             createdAt = createdAt,
             updatedAt = updatedAt
     )
 
-    fun updateStaff(reqStaffDTO: RequestStaffDTO, company: Company) : Staff{
+    fun updateStaff(reqStaffDTO: RequestStaffDTO, company: Company, status: Status) : Staff{
         return this.apply {
             name = reqStaffDTO.name
             position = reqStaffDTO.position
             gender = reqStaffDTO.gender
             location = reqStaffDTO.location
             this.company = company
+            this.status = status
         }
     }
 
     companion object{
-        fun fromReqDTO(reqStaffDTO: RequestStaffDTO, company: Company) = Staff(
+        fun fromReqDTO(reqStaffDTO: RequestStaffDTO, company: Company, status: Status) = Staff(
                 name = reqStaffDTO.name,
                 position = reqStaffDTO.position,
                 gender = reqStaffDTO.gender,
                 location = reqStaffDTO.location
         ).apply { this.company = company }
+                .apply { this.status = status }
+
+//        fun fromReqDTO(reqStaffDTO: RequestStaffDTO, company: Company) : Staff{
+//            return Staff(
+//                    name = reqStaffDTO.name,
+//                    position = reqStaffDTO.position
+//            ).apply {
+//                this.company = company
+//            }
+//        }
     }
 }

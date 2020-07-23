@@ -3,8 +3,8 @@ package com.soramitsukhmer.contactmanagement.api.controller
 import com.soramitsukhmer.contactmanagement.api.request.FilterParamsStaffDTO
 import com.soramitsukhmer.contactmanagement.api.request.RequestStaffDTO
 import com.soramitsukhmer.contactmanagement.api.request.StaffDTO
+import com.soramitsukhmer.contactmanagement.api.response.PageResponse
 import com.soramitsukhmer.contactmanagement.service.StaffService
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -16,13 +16,19 @@ class StaffController(
         val staffService: StaffService
 ){
     @GetMapping
-    fun listAllStaffs(@RequestParam filterParamsStaffDTO: FilterParamsStaffDTO?,
-                      pageable: Pageable) : ResponseEntity<Page<StaffDTO>>{
+    fun listAllStaffs(@Valid filterParamsStaffDTO: FilterParamsStaffDTO,
+                      pageable: Pageable) : ResponseEntity<PageResponse<StaffDTO>> {
         return ResponseEntity.ok(staffService.listAllStaffs(filterParamsStaffDTO, pageable))
     }
 
+//    fun listAllStaffs():ResponseEntity<List<StaffDTO>>
+//    {
+//        return ResponseEntity.ok(staffService.listAllStaffs())
+//    }
+
     @GetMapping("/{id}")
-    fun getStaff(@PathVariable id : Long) : ResponseEntity<StaffDTO>{
+    fun getStaffByID(@PathVariable("id") id:Long):ResponseEntity<StaffDTO>
+    {
         return ResponseEntity.ok(staffService.getStaff(id))
     }
 
@@ -37,7 +43,13 @@ class StaffController(
     }
 
     @DeleteMapping("/{id}")
-    fun deleteStaff(@PathVariable id: Long) : ResponseEntity<String>{
+    fun deleteStaff(@PathVariable id: Long) : ResponseEntity<String> {
         return ResponseEntity.ok(staffService.deleteStaff(id))
+    }
+
+    @GetMapping("/byname/{name}")
+    fun getStaffByName(@PathVariable("name") name:String):ResponseEntity<StaffDTO>
+    {
+        return ResponseEntity.ok(staffService.getStaffByName(name))
     }
 }

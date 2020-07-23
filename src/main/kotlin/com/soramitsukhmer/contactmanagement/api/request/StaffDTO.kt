@@ -13,6 +13,7 @@ data class StaffDTO(
         var location: String?,
         var position: String?,
         var company: CompanyDTO,
+        var status:StatusDTO,
         @JsonFormat(pattern = Constants.DATETIME_FORMAT)
         val createdAt: LocalDateTime,
         @JsonFormat(pattern = Constants.DATETIME_FORMAT)
@@ -21,7 +22,8 @@ data class StaffDTO(
 
 data class FilterParamsStaffDTO(
         val q: String?,
-        val companyId: Long?
+        val companyId: Long?,
+        val statusId:Long?
 )
 
 data class RequestStaffDTO(
@@ -29,5 +31,6 @@ data class RequestStaffDTO(
         @field:NotEmpty val gender: String,
         val location: String?,
         val position: String?,
-        @field:NotNull val company: Long
+        @field:NotNull val company: Long,
+        @field:NotNull val status: Long = 1
 )

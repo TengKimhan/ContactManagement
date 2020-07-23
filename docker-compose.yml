@@ -9,3 +9,14 @@ services:
       - 1521:1521
     volumes:
       - ./oracle/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  # service-registry:
+  #   image: "035167628910.dkr.ecr.ap-southeast-1.amazonaws.com/fast-service-registry:latest"
+  #   ports:
+  #     - 8761:8761
+
+  # rabbitmq:
+  #   image: "bitnami/rabbitmq:latest"
+  #   ports:
+  #     - 15672:15672
+  #     - 5672:5672
