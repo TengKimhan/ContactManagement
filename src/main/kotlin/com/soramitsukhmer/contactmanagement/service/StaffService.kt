@@ -1,11 +1,13 @@
 package com.soramitsukhmer.contactmanagement.service
 
-import com.soramitsukhmer.contactmanagement.api.exception.IDNotFoundException
+import com.soramitsukhmer.contactmanagement.api.exception.FieldNotFoundException
 import com.soramitsukhmer.contactmanagement.api.request.FilterParamsStaffDTO
 import com.soramitsukhmer.contactmanagement.api.request.RequestStaffDTO
 import com.soramitsukhmer.contactmanagement.api.request.StaffDTO
 import com.soramitsukhmer.contactmanagement.api.response.PageResponse
+import com.soramitsukhmer.contactmanagement.domain.model.Company
 import com.soramitsukhmer.contactmanagement.domain.model.Staff
+import com.soramitsukhmer.contactmanagement.domain.model.Status
 import com.soramitsukhmer.contactmanagement.domain.spec.StaffSpec
 import com.soramitsukhmer.contactmanagement.repository.CompanyRepository
 import com.soramitsukhmer.contactmanagement.repository.StaffRepository
@@ -34,17 +36,17 @@ class StaffService(
 
     fun getStaff(id : Long) : StaffDTO{
         return staffRepository.findById(id).orElseThrow {
-            throw IDNotFoundException("StaffId [$id]")
+            throw FieldNotFoundException(Staff::class.simpleName.toString(), "$id")
         }.toDTO()
     }
 
     fun createStaff(reqStaffDTO: RequestStaffDTO) : StaffDTO {
         val company = companyRepository.findById(reqStaffDTO.company).orElseThrow {
-            throw IDNotFoundException("[${reqStaffDTO.company}]")
+            throw FieldNotFoundException(Company::class.simpleName.toString(), "${reqStaffDTO.company}")
         }
 
         val status = statusRepository.findById(reqStaffDTO.status).orElseThrow{
-            throw IDNotFoundException("Status ${reqStaffDTO.status}")
+            throw FieldNotFoundException(Status::class.simpleName.toString(), "${reqStaffDTO.status}")
         }
 
         val newStaff = Staff.fromReqDTO(reqStaffDTO, company, status)
@@ -53,22 +55,22 @@ class StaffService(
 
     fun updateStaff(id: Long, reqStaffDTO: RequestStaffDTO) : StaffDTO{
         val company = companyRepository.findById(reqStaffDTO.company).orElseThrow {
-            throw IDNotFoundException("CompanyId [${reqStaffDTO.company}]")
+            throw FieldNotFoundException(Company::class.simpleName.toString(), "${reqStaffDTO.company}")
         }
 
         val status = statusRepository.findById(reqStaffDTO.status).orElseThrow{
-            throw IDNotFoundException("Status ${reqStaffDTO.status}")
+            throw FieldNotFoundException(Status::class.simpleName.toString(), "${reqStaffDTO.status}")
         }
 
         val staff = staffRepository.findById(id).orElseThrow {
-            throw IDNotFoundException("StaffId [$id]")
+            throw FieldNotFoundException(Staff::class.simpleName.toString(), "$id")
         }
         return staffRepository.save(staff.updateStaff(reqStaffDTO, company,status)).toDTO()
     }
 
     fun deleteStaff(id: Long) : String {
         val staff = staffRepository.findById(id).orElseThrow {
-            throw IDNotFoundException("StaffId [$id]")
+            throw FieldNotFoundException(Staff::class.simpleName.toString(), "$id")
         }
         staffRepository.delete(staff)
         return "DELETED"

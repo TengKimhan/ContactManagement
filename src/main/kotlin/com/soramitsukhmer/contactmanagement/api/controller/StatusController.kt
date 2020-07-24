@@ -13,27 +13,27 @@ import javax.validation.Valid
 @RequestMapping(path = ["/api/v1/status"])
 class StatusController(val statusService: StatusService) {
 
-//    @GetMapping
-//    fun getAllStatus(pageable: Pageable):ResponseEntity<Page<StatusDTO>>
-//    {
-//        return ResponseEntity.ok(statusService.getAllStatus(pageable))
-//    }
-//
-//    @GetMapping("/{id}")
-//    fun getStatus(@PathVariable("id") id:Long):ResponseEntity<StatusDTO>
-//    {
-//        return ResponseEntity.ok(statusService.getStatus(id))
-//    }
-//
-//    @PostMapping
-//    fun createStatus(@Valid @RequestBody requestStatusDTO: RequestStatusDTO): ResponseEntity<StatusDTO>
-//    {
-//        return ResponseEntity.ok(statusService.createStatus(requestStatusDTO))
-//    }
-//
-//    @PutMapping("{id}")
-//    fun updateStatus(@Valid @RequestBody requestStatusDTO: RequestStatusDTO, @PathVariable("id") id:Long): ResponseEntity<StatusDTO>
-//    {
-//        return ResponseEntity.ok(statusService.updateStatus(id,requestStatusDTO))
-//    }
+    @GetMapping
+    fun getAllStatus(pageable: Pageable):ResponseEntity<Page<StatusDTO>>
+    {
+        return ResponseEntity.ok(statusService.getAllStatus(pageable))
+    }
+
+    @GetMapping("/{id}")
+    fun getStatus(@PathVariable("id") id:Long):ResponseEntity<StatusDTO>
+    {
+        return ResponseEntity.ok(statusService.getStatus(id))
+    }
+
+    @PostMapping
+    fun createStatus(@Valid @RequestBody requestStatusDTO: RequestStatusDTO): ResponseEntity<StatusDTO>
+    {
+        return ResponseEntity.ok(statusService.createStatus(requestStatusDTO))
+    }
+
+    @PutMapping("{id}")
+    fun updateStatus(@Valid @RequestBody requestStatusDTO: RequestStatusDTO, @PathVariable("id") id:Long): ResponseEntity<StatusDTO>
+    {
+        return ResponseEntity.ok(statusService.updateStatus(id,requestStatusDTO))
+    }
 }

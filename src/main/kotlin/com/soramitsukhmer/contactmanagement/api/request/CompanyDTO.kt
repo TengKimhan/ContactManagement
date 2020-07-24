@@ -26,8 +26,8 @@ data class FilterParamCompanyDTO(
 )
 
 data class RequestCompanyDTO(
-        @field:NotEmpty val name: String,
-        @field:NotEmpty val phone: String,
-        val webUrl: String?,
-        @field:NotNull val status: Long = 1
+        @field:NotEmpty var name: String,
+        @field:NotEmpty var phone: String,
+        var webUrl: String?,
+        @field:NotNull var status: Long = 1
 )

@@ -1,7 +1,6 @@
 package com.soramitsukhmer.contactmanagement.api.exception
 
 import com.soramitsukhmer.contactmanagement.api.response.ErrorResponse
-import com.soramitsukhmer.contactmanagement.domain.model.Company
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
@@ -15,10 +14,10 @@ class ControllerAdvice {
 
     val log: Logger = LoggerFactory.getLogger(this.javaClass)
 
-    @ExceptionHandler(IDNotFoundException::class)
-    fun iDNotFoundException(request: HttpServletRequest, e: IDNotFoundException?) : ResponseEntity<ErrorResponse>{
+    @ExceptionHandler(FieldNotFoundException::class)
+    fun iDNotFoundException(request: HttpServletRequest, e: FieldNotFoundException?) : ResponseEntity<ErrorResponse>{
         log.error("IDNotFoundException: $e")
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorResponse(errorMessage = e?.msg + " Is Not found"))
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorResponse(errorMessage = e?.message + " Is Not found"))
     }
 
     @ExceptionHandler(ChildFoundException::class)

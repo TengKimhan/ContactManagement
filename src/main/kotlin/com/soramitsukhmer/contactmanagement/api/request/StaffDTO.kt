@@ -27,10 +27,10 @@ data class FilterParamsStaffDTO(
 )
 
 data class RequestStaffDTO(
-        @field:NotEmpty val name: String,
-        @field:NotEmpty val gender: String,
-        val location: String?,
-        val position: String?,
-        @field:NotNull val company: Long,
-        @field:NotNull val status: Long = 1
+        @field:NotEmpty var name: String,
+        @field:NotEmpty var gender: String,
+        var location: String?,
+        var position: String?,
+        @field:NotNull var company: Long,
+        @field:NotNull var status: Long = 1
 )

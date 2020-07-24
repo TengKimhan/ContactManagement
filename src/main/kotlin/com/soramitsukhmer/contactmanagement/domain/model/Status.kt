@@ -10,9 +10,9 @@ import javax.persistence.*
 @Table(name = "Status")
 data class Status(
     @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    val id:Long = 0,
+    var id:Long = 0,
     @Column(name = "name")
     var name:String
 )

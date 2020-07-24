@@ -1,9 +1,11 @@
 package com.soramitsukhmer.contactmanagement.service
 
-import com.soramitsukhmer.contactmanagement.api.exception.IDNotFoundException
+import com.soramitsukhmer.contactmanagement.api.exception.ChildFoundException
+import com.soramitsukhmer.contactmanagement.api.exception.FieldNotFoundException
 import com.soramitsukhmer.contactmanagement.api.request.*
 import com.soramitsukhmer.contactmanagement.api.response.PageResponse
 import com.soramitsukhmer.contactmanagement.domain.model.Company
+import com.soramitsukhmer.contactmanagement.domain.model.Status
 import com.soramitsukhmer.contactmanagement.domain.spec.CompanySpec
 import com.soramitsukhmer.contactmanagement.repository.CompanyRepository
 import com.soramitsukhmer.contactmanagement.repository.StatusRepository
@@ -46,14 +48,14 @@ class CompanyService(
 
     fun getCompany(id: Long) : CompanyDTO{
         return companyRepository.findById(id).orElseThrow{
-            throw IDNotFoundException("CompanyId[$id]")
+            throw FieldNotFoundException(Company::class.simpleName.toString(), "$id")
         }.toDTO()
     }
 
     fun createCompany(reqCompanyDTO: RequestCompanyDTO) : CompanyDTO{
 
         val status = statusRepository.findById(reqCompanyDTO.status).orElseThrow{
-            throw IDNotFoundException("Status ${reqCompanyDTO.status}")
+            throw FieldNotFoundException(Status::class.simpleName.toString(), "$reqCompanyDTO.status")
         }
 
         val newCompany = Company.fromReqDTO(reqCompanyDTO, status)
@@ -65,11 +67,11 @@ class CompanyService(
 
     fun updateCompany(id: Long, reqCompanyDTO: RequestCompanyDTO) : CompanyDTO{
         val status = statusRepository.findById(reqCompanyDTO.status).orElseThrow{
-            throw IDNotFoundException("Status ${reqCompanyDTO.status}")
+            throw FieldNotFoundException(Status::class.simpleName.toString(), "$reqCompanyDTO.status")
         }
 
         val company = companyRepository.findById(id).orElseThrow{
-            throw IDNotFoundException("CompanyId[$id]")
+            throw FieldNotFoundException(Company::class.simpleName.toString(), "$id")
         }.updateCompany(reqCompanyDTO, status)
 
         companyValidationService.validateUniquePhone(company.id, company.phone, company.name)
@@ -79,12 +81,14 @@ class CompanyService(
 
     fun deleteCompany(id: Long) : String{
         val company = companyRepository.findById(id).orElseThrow{
-            throw IDNotFoundException("CompanyId [$id]")
+            throw FieldNotFoundException(Company::class.simpleName.toString(), "$id")
         }
 
-        companyRepository.delete(company)
-//        throw ChildFoundException("Delete can't be perform because company has staffs.")
-
+        try{
+            companyRepository.delete(company)
+        }catch (e:Exception) {
+            throw ChildFoundException("Delete can't be perform because company has staffs.")
+        }
         return "DELETED"
     }
 }
