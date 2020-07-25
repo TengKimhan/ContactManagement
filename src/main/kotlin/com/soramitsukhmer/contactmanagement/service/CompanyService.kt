@@ -7,17 +7,22 @@ import com.soramitsukhmer.contactmanagement.api.response.PageResponse
 import com.soramitsukhmer.contactmanagement.domain.model.Company
 import com.soramitsukhmer.contactmanagement.domain.model.Status
 import com.soramitsukhmer.contactmanagement.domain.spec.CompanySpec
+import com.soramitsukhmer.contactmanagement.domain.spec.StaffSpec
 import com.soramitsukhmer.contactmanagement.repository.CompanyRepository
 import com.soramitsukhmer.contactmanagement.repository.StatusRepository
 import com.soramitsukhmer.contactmanagement.service.validation.CompanyValidationService
 import com.soramitsukhmer.contactmanagement.helper.toPageResponse
+import com.soramitsukhmer.contactmanagement.repository.StaffRepository
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
 
 @Service
 class CompanyService(
-        val companyRepository: CompanyRepository, val statusRepository: StatusRepository, val companyValidationService: CompanyValidationService
+        val companyRepository: CompanyRepository,
+        val statusRepository: StatusRepository,
+        val companyValidationService: CompanyValidationService,
+        val staffRepository: StaffRepository
 ){
 //    fun listAllCompanies() : List<CompanyDTO>{
 //
@@ -84,11 +89,12 @@ class CompanyService(
             throw FieldNotFoundException(Company::class.simpleName.toString(), "$id")
         }
 
-        try{
-            companyRepository.delete(company)
-        }catch (e:Exception) {
-            throw ChildFoundException("Delete can't be perform because company has staffs.")
-        }
+        val companySpec = company.id?.let { StaffSpec.genFilterCompany(it) }
+        val staff = staffRepository.findAll(Specification.where(companySpec)).toList()
+
+        if(staff.isEmpty()) companyRepository.delete(company)
+        else throw ChildFoundException("Delete can't be perform because company has staffs.")
+
         return "DELETED"
     }
 }
