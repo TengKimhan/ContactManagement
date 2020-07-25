@@ -17,9 +17,12 @@ class CompanyValidationService(val companyRepository: CompanyRepository){
 //        }
 
         companyId?.let {
-            if(companyRepository.existsCompanyByPhoneAndIdIsNot(phone, companyId)) throw RecordIsAlreadyExistException("[Phone:$phone] is already existed.")
+//            if(companyRepository.existsCompanyByPhoneOrNameAndIdIsNot(phone, name, it)) throw RecordIsAlreadyExistException("[Phone:$phone] or [Name:$name] is already exist.")
+            if(companyRepository.existsCompanyByPhoneAndIdIsNot(phone, it) || companyRepository.existsCompanyByNameAndIdIsNot(name, it))
+                throw RecordIsAlreadyExistException("[Phone:$phone] or [Name:$name] is already exist.")
         } ?: run{
-             if(companyRepository.existsCompanyByPhone(phone)) throw RecordIsAlreadyExistException("Phone must be unique")
+            if(companyRepository.existsCompanyByPhoneOrName(phone, name))
+                throw RecordIsAlreadyExistException("Phone or Name must be unique")
         }
     }
 }

@@ -90,7 +90,7 @@ class CompanyService(
         }
 
         val companySpec = company.id?.let { StaffSpec.genFilterCompany(it) }
-        val staff = staffRepository.findAll(Specification.where(companySpec)).toList()
+        val staff = staffRepository.findAll(Specification.where(companySpec))
 
         if(staff.isEmpty()) companyRepository.delete(company)
         else throw ChildFoundException("Delete can't be perform because company has staffs.")

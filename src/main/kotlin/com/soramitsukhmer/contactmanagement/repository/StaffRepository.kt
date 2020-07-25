@@ -9,5 +9,4 @@ import org.springframework.data.repository.query.Param
 
 interface StaffRepository : PagingAndSortingRepository<Staff, Long>, JpaSpecificationExecutor<Staff>, CrudRepository<Staff, Long> {
     fun findByName(@Param("name") name:String):Staff
-    fun findByCompanyId(@Param("companyId") companyId:Long):Staff
 }

@@ -11,6 +11,8 @@ interface CompanyRepository : CrudRepository<Company, Long>, PagingAndSortingRep
     fun existsCompanyByPhone(phone: String): Boolean
     fun existsCompanyByPhoneAndIdIsNot(phone: String, id: Long): Boolean
     fun existsCompanyByPhoneOrName(phone: String, name: String): Boolean
+    fun existsCompanyByPhoneOrNameAndIdIsNot(phone: String, name: String, id: Long): Boolean
+    fun existsCompanyByNameAndIdIsNot(name: String, id: Long) : Boolean
     fun existsCompanyByPhoneAndNameAndIdIsNot(phone: String, name: String, id: Long): Boolean
 
 }
