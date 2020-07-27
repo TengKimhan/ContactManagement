@@ -58,11 +58,12 @@ class StaffServiceTest {
     fun testUpdateStaff()
     {
         val company = companyService.createCompany(CompanyServiceTestHelper.validCompanyReqDTO)
-        val validStaff = StaffServiceTestHelper.validStaffDTO
-        validStaff.company = company.id
+        val validStaff = StaffServiceTestHelper.validStaffDTO  // create staff
+        validStaff.company = company.id // when we create a new company we need to insert company id to that staff
 
         val createdStaff = staffService.createStaff(validStaff)
-        val updatedStaff = StaffServiceTestHelper.validStaffDTO
+        val updatedStaff = validStaff
+        //val updatedStaff = StaffServiceTestHelper.validStaffDTO
         updatedStaff.name = "new-staff-update"
         val staff = staffService.updateStaff(createdStaff.id, updatedStaff)
         assertNotEquals("New name and old name are not the same", createdStaff.name, staff.name)
