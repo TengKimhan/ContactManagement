@@ -2,6 +2,7 @@ package com.soramitsukhmer.contactmanagement.Service
 
 import com.soramitsukhmer.contactmanagement.api.request.RequestStatusDTO
 import com.soramitsukhmer.contactmanagement.api.request.StaffDTO
+import com.soramitsukhmer.contactmanagement.repository.CompanyRepository
 import com.soramitsukhmer.contactmanagement.repository.StaffRepository
 import com.soramitsukhmer.contactmanagement.service.CompanyService
 import com.soramitsukhmer.contactmanagement.service.StaffService
@@ -25,6 +26,9 @@ class StaffServiceTest {
     lateinit var staffRepository: StaffRepository
 
     @Autowired
+    lateinit var companyRepository: CompanyRepository
+
+    @Autowired
     lateinit var statusService: StatusService
 
     @Autowired
@@ -32,7 +36,8 @@ class StaffServiceTest {
 
     @BeforeEach
     fun run(){
-//        staffRepository.deleteAll()
+        staffRepository.deleteAll()
+        companyRepository.deleteAll()
         statusService.createStatus(RequestStatusDTO("Active"))
         statusService.createStatus(RequestStatusDTO("Inactive"))
     }
@@ -45,8 +50,8 @@ class StaffServiceTest {
         validStaff.company = company.id
 
         val createdStaff = staffService.createStaff(validStaff)
-        assertNotNull("Staff is created", createdStaff.id)
-        staffService.deleteStaff(createdStaff.id)
+        assertNotNull("Staff create", createdStaff.id)
+        //staffService.deleteStaff(createdStaff.id)
     }
 
     @Test
@@ -58,10 +63,10 @@ class StaffServiceTest {
 
         val createdStaff = staffService.createStaff(validStaff)
         val updatedStaff = StaffServiceTestHelper.validStaffDTO
-        updatedStaff.name = "saklfjklsdjf"
+        updatedStaff.name = "new-staff-update"
         val staff = staffService.updateStaff(createdStaff.id, updatedStaff)
-        assertNotEquals("New name and old name is not the same", createdStaff.name, staff.name)
-        staffService.deleteStaff(createdStaff.id)
+        assertNotEquals("New name and old name are not the same", createdStaff.name, staff.name)
+        //staffService.deleteStaff(createdStaff.id)
     }
 
     @Test
@@ -93,7 +98,7 @@ class StaffServiceTest {
         val createdStaff = staffService.createStaff(validStaff)
         val getStaff = staffService.getStaff(createdStaff.id)
         assertEquals("Get staff successfully", createdStaff.id, getStaff.id)
-        staffService.deleteStaff(createdStaff.id)
+        //staffService.deleteStaff(createdStaff.id)
     }
 
     @Test
