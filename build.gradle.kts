@@ -12,6 +12,12 @@ group = "com.soramitsukhmer"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
+configurations {
+	compileOnly {
+		extendsFrom(configurations.annotationProcessor.get())
+	}
+}
+
 repositories {
 	mavenCentral()
 }
@@ -24,6 +30,7 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("com.oracle.ojdbc:ojdbc8:19.3.0.0")
+	implementation("org.liquibase:liquibase-core")
 	runtimeOnly("com.h2database:h2")
 	implementation ("com.github.javafaker:javafaker:1.0.2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="04" author="kimhan">
+        <comment>Inserting Status</comment>
+        <insert tableName="status">
+            <column name="id" valueNumeric="1"/>
+            <column name="name" value="Active"/>
+        </insert>
+        <insert tableName="status">
+            <column name="id" valueNumeric="2"/>
+            <column name="name" value="Inactive"/>
+        </insert>
+
+    </changeSet>
+</databaseChangeLog>

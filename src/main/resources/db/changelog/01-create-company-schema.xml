@@ -1,0 +1,102 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+        <changeSet id="1" author="kimhan">
+            <createTable tableName="company">
+                <column name="id" type="NUMBER(19, 0)" autoIncrement="true">
+                    <constraints nullable="false" primaryKey="true"/>
+                </column>
+
+                <column name="name" type="varchar(255)">
+                    <constraints nullable="false" />
+                </column>
+
+                <column name="phone" type="varchar(255)">
+                    <constraints nullable="false"/>
+                </column>
+
+                <column name="web_url" type="varchar(255)">
+                    <constraints nullable="true"/>
+                </column>
+
+                <column name="private_pass_phrase" type="varchar(255)">
+                    <constraints nullable="false"/>
+                </column>
+
+                <column name="created_at" type="TIMESTAMP(6)">
+                    <constraints nullable="false"/>
+                </column>
+
+                <column name="updated_at" type="NUMBER(19, 0)">
+                    <constraints nullable="false"/>
+                </column>
+
+                <column name="status_id" type="NUMBER(19, 0)">
+                    <constraints nullable="false"/>
+                </column>
+            </createTable>
+
+            <createTable tableName="staff">
+                <column name="id" type="NUMBER(19, 0)" autoIncrement="true">
+                    <constraints nullable="false" primaryKey="true"/>
+                </column>
+
+                <column name="name" type="varchar(255)">
+                    <constraints nullable="false"/>
+                </column>
+
+                <column name="gender" type="varchar(255)">
+                    <constraints nullable="false"/>
+                </column>
+
+                <column name="location" type="varchar(255)">
+                    <constraints nullable="true"/>
+                </column>
+
+                <column name="position" type="varchar(255)">
+                    <constraints nullable="false"/>
+                </column>
+
+                <column name="created_at" type="TIMESTAMP(6)">
+                    <constraints nullable="false"/>
+                </column>
+
+                <column name="updated_at" type="NUMBER(19, 0)">
+                    <constraints nullable="false"/>
+                </column>
+
+                <column name="company_id" type="NUMBER(19, 0)">
+                    <constraints nullable="false"/>
+                </column>
+
+                <column name="status_id" type="NUMBER(19, 0)">
+                    <constraints nullable="false"/>
+                </column>
+            </createTable>
+
+            <createTable tableName="status">
+                <column name="id" type="NUMBER(19, 0)" autoIncrement="true">
+                    <constraints nullable="false" primaryKey="true"/>
+                </column>
+
+                <column name="name" type="varchar(255)">
+                    <constraints nullable="false"/>
+                </column>
+            </createTable>
+
+            <addForeignKeyConstraint baseTableName="company" baseColumnNames="status_id"
+                                     constraintName="status_fk"
+                                     referencedTableName="status" referencedColumnNames="id"/>
+
+            <addForeignKeyConstraint baseTableName="staff" baseColumnNames="company_id"
+                                     constraintName="company_fk"
+                                     referencedTableName="company" referencedColumnNames="id"/>
+
+            <addForeignKeyConstraint baseTableName="staff" baseColumnNames="status_id"
+                                     constraintName="status_staff_fk"
+                                     referencedTableName="status" referencedColumnNames="id"/>
+
+        </changeSet>
+</databaseChangeLog>
