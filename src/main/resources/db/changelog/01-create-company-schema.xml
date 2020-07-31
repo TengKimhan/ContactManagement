@@ -4,7 +4,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
         <changeSet id="1" author="kimhan">
-            <createTable tableName="company">
+            <createTable tableName="companies">
                 <column name="id" type="NUMBER(19, 0)" autoIncrement="true">
                     <constraints nullable="false" primaryKey="true"/>
                 </column>
@@ -38,7 +38,7 @@
                 </column>
             </createTable>
 
-            <createTable tableName="staff">
+            <createTable tableName="staffs">
                 <column name="id" type="NUMBER(19, 0)" autoIncrement="true">
                     <constraints nullable="false" primaryKey="true"/>
                 </column>
@@ -86,17 +86,35 @@
                 </column>
             </createTable>
 
-            <addForeignKeyConstraint baseTableName="company" baseColumnNames="status_id"
+            <createTable tableName="location">
+                <column name ="id" type = "NUMBER(19,0)" autoIncrement="true">
+                    <constraints nullable="false" primaryKey="true"/>
+                </column>
+
+                <column name="name" type="varchar(255)">
+                    <constraints nullable="false"/>
+                </column>
+            </createTable>
+
+            <addForeignKeyConstraint baseTableName="companies" baseColumnNames="status_id"
                                      constraintName="status_fk"
                                      referencedTableName="status" referencedColumnNames="id"/>
 
-            <addForeignKeyConstraint baseTableName="staff" baseColumnNames="company_id"
+            <addForeignKeyConstraint baseTableName="staffs" baseColumnNames="company_id"
                                      constraintName="company_fk"
-                                     referencedTableName="company" referencedColumnNames="id"/>
+                                     referencedTableName="companies" referencedColumnNames="id"/>
 
-            <addForeignKeyConstraint baseTableName="staff" baseColumnNames="status_id"
+            <addForeignKeyConstraint baseTableName="staffs" baseColumnNames="status_id"
                                      constraintName="status_staff_fk"
                                      referencedTableName="status" referencedColumnNames="id"/>
+
+            <addForeignKeyConstraint baseTableName="companies" baseColumnNames="location_id"
+                                     constraintName="location_fk"
+                                     referencedTableName="location" referencedColumnNames="id"/>
+
+            <addForeignKeyConstraint baseTableName="location" baseColumnNames="company_id"
+                                     constraintName="company_fk"
+                                     referencedTableName="companies" referencedColumnNames="id"/>
 
         </changeSet>
 </databaseChangeLog>

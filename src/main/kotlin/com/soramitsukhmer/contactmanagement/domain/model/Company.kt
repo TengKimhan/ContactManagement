@@ -26,7 +26,16 @@ data class Company(
         @UpdateTimestamp
         @Column(name = "updated_at")
         var updatedAt: LocalDateTime = LocalDateTime.now()
+
 ){
+
+
+//        @ManyToMany(mappedBy = "companies")
+//        var location: List<Location> = mutableListOf<Location>()
+
+        @OneToMany(mappedBy = "company")
+        lateinit var companylocation: Set<CompanyLocation>
+
 
         @ManyToOne
         @JoinColumn(name = "status_id")
