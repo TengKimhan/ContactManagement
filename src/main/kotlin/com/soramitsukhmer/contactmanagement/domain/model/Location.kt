@@ -1,11 +1,7 @@
 package com.soramitsukhmer.contactmanagement.domain.model
-
 import com.soramitsukhmer.contactmanagement.api.request.LocationDTO
 import com.soramitsukhmer.contactmanagement.api.request.RequestLocationDTO
-import org.hibernate.mapping.Join
-import org.springframework.jmx.export.annotation.ManagedNotification
 import javax.persistence.*
-
 
 @Entity
 @Table(name = "location")
@@ -15,17 +11,26 @@ data class Location(
         @Column(name = "name")
         var name : String
 ) {
+        @ManyToMany(cascade = arrayOf(CascadeType.ALL))
+        @JoinTable(name = "company_location", joinColumns = arrayOf(JoinColumn(name = "location_id", referencedColumnName = "id")), inverseJoinColumns = arrayOf(JoinColumn(name = "company_id", referencedColumnName = "id")))
+        lateinit var companies: Set<Company>
+
+
+//        @OneToMany(mappedBy = "location", cascade = arrayOf(CascadeType.ALL), orphanRemoval = true)
+//        lateinit var companyLocation: Set<CompanyLocation>
+
+
 //        @ManyToMany(cascade = arrayOf(CascadeType.ALL))
 //        @JoinTable(name = "company_location", joinColumns = arrayOf(JoinColumn(name = "location_id", referencedColumnName = "id")), inverseJoinColumns = arrayOf(JoinColumn(name = "company_id", referencedColumnName = "id")))
 //        var companies: List<Company> = mutableListOf<Company>()
 
-        @OneToMany(mappedBy = "location")
-        lateinit var companyLocation: Set<CompanyLocation>
-
+//        @OneToMany(mappedBy = "location")
+//        lateinit var companyLocation: Set<CompanyLocation>
 
         fun toDTO() = LocationDTO(
                 id = id,
-                name = name
+                name = name,
+                companies = companies
         )
 
         fun updateLocation(requestLocationDTO: RequestLocationDTO) : Location

@@ -29,13 +29,17 @@ data class Company(
 
 ){
 
+        @ManyToMany(mappedBy = "company")
+        lateinit var location: Set<Location>
+//        @OneToMany(mappedBy = "company")
+//        lateinit var companyLocation: Set<CompanyLocation>
+
 
 //        @ManyToMany(mappedBy = "companies")
 //        var location: List<Location> = mutableListOf<Location>()
 
         @OneToMany(mappedBy = "company")
-        lateinit var companylocation: Set<CompanyLocation>
-
+        lateinit var companyLocations: List<CompanyLocation>
 
         @ManyToOne
         @JoinColumn(name = "status_id")
@@ -48,7 +52,8 @@ data class Company(
                 webUrl = webUrl,
                 createdAt = createdAt,
                 updatedAt = updatedAt,
-                status = status.toDTO()
+                status = status.toDTO(),
+                location = companyLocations.map { it.toLocationDTO() }
         )
 
         fun updateCompany(reqCompanyDTO: RequestCompanyDTO, status: Status) : Company{

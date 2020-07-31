@@ -46,9 +46,11 @@ class CompanyController(
     }
 
     @DeleteMapping("/{id}")
-    fun deleteCompany(@PathVariable id: Long) : ResponseEntity<String> {
-        return ResponseEntity.ok(companyService.deleteCompany(id))
+    fun deleteCompany(@PathVariable id: Long) : Any {
+        return ok(companyService.deleteCompany(id))
     }
+
+    private fun <T> ok(data: T) : T = data
 
 //    fun deleteCompany(@PathVariable id:Long){
 //        ResponseEntity.ok(companyService.deleteCompany(id))

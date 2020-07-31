@@ -5,14 +5,14 @@ import com.soramitsukhmer.contactmanagement.api.exception.FieldNotFoundException
 import com.soramitsukhmer.contactmanagement.api.request.*
 import com.soramitsukhmer.contactmanagement.api.response.PageResponse
 import com.soramitsukhmer.contactmanagement.domain.model.Company
+import com.soramitsukhmer.contactmanagement.domain.model.CompanyLocation
+import com.soramitsukhmer.contactmanagement.domain.model.Staff
 import com.soramitsukhmer.contactmanagement.domain.model.Status
 import com.soramitsukhmer.contactmanagement.domain.spec.CompanySpec
 import com.soramitsukhmer.contactmanagement.domain.spec.StaffSpec
-import com.soramitsukhmer.contactmanagement.repository.CompanyRepository
-import com.soramitsukhmer.contactmanagement.repository.StatusRepository
 import com.soramitsukhmer.contactmanagement.service.validation.CompanyValidationService
 import com.soramitsukhmer.contactmanagement.helper.toPageResponse
-import com.soramitsukhmer.contactmanagement.repository.StaffRepository
+import com.soramitsukhmer.contactmanagement.repository.*
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
@@ -21,6 +21,8 @@ import org.springframework.stereotype.Service
 class CompanyService(
         val companyRepository: CompanyRepository,
         val statusRepository: StatusRepository,
+        val locationRepository: LocationRepository,
+        val companyLocationRepository: CompanyLocationRepository,
         val companyValidationService: CompanyValidationService,
         val staffRepository: StaffRepository
 ){
@@ -62,12 +64,43 @@ class CompanyService(
         val status = statusRepository.findById(reqCompanyDTO.status).orElseThrow{
             throw FieldNotFoundException(Status::class.simpleName.toString(), "$reqCompanyDTO.status")
         }
+        // Create Company
+        // Result Company ID
+        val company = Company()
+        locationRepository.findAllById(reqCompanyDTO.locations).map {
+            val companyLocation = CompanyLocation().apply {
+                this.company = company
+                this.location = it
+            }
+            companyLocationRepository.save(companyLocation)
+        }
+        company.companyLocations
 
         val newCompany = Company.fromReqDTO(reqCompanyDTO, status)
 
         companyValidationService.validateUniquePhone(null, newCompany.phone, newCompany.name)
 
         return companyRepository.save(newCompany).toDTO()
+    }
+
+    fun createCompanyWithStaffs(req: RequestCompanyWithStaffsDTO) : String{
+        val companyDTO = RequestCompanyDTO(
+                name = req.name,
+                phone = req.phone,
+                webUrl = req.webUrl,
+                status = req.status
+        )
+        val createdCompany = createCompany(companyDTO)
+        req.staffs.map {staffDTO ->
+            val company = companyRepository.findById(createdCompany.id).orElseThrow {
+                blah blah
+            }
+            val status = statusRepository.findById(staffDTO.status).orElseThrow {
+                blah blah
+            }
+            val staff = Staff.fromReqDTO(staffDTO, company, status)
+            staffRepository.save(staff)
+        }
     }
 
     fun updateCompany(id: Long, reqCompanyDTO: RequestCompanyDTO) : CompanyDTO{

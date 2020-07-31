@@ -2,6 +2,7 @@ package com.soramitsukhmer.contactmanagement.api.request
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.soramitsukhmer.contactmanagement.common.Constants
+import com.soramitsukhmer.contactmanagement.domain.model.Location
 import com.soramitsukhmer.contactmanagement.domain.model.Status
 import jdk.jshell.Snippet
 import java.time.LocalDateTime
@@ -17,7 +18,8 @@ data class CompanyDTO(
         @JsonFormat(pattern = Constants.DATETIME_FORMAT)
         val createdAt: LocalDateTime,
         @JsonFormat(pattern = Constants.DATETIME_FORMAT)
-        val updatedAt: LocalDateTime
+        val updatedAt: LocalDateTime,
+        val location: List<LocationDTO>
 )
 
 data class FilterParamCompanyDTO(
@@ -29,5 +31,14 @@ data class RequestCompanyDTO(
         @field:NotEmpty var name: String,
         @field:NotEmpty var phone: String,
         var webUrl: String?,
-        @field:NotNull var status: Long = 1
+        @field:NotNull var status: Long = 1,
+        @field:NotNull var locations: List<Long>
+)
+
+data class RequestCompanyWithStaffsDTO(
+        @field:NotEmpty var name: String,
+        @field:NotEmpty var phone: String,
+        var webUrl: String?,
+        @field:NotNull var status: Long = 1,
+        @field:NotNull var staffs: List<RequestStaffDTO>
 )
