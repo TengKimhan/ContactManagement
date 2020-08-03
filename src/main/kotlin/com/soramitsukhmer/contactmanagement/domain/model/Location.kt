@@ -13,7 +13,7 @@ data class Location(
 ) {
         @ManyToMany(cascade = arrayOf(CascadeType.ALL))
         @JoinTable(name = "company_location", joinColumns = arrayOf(JoinColumn(name = "location_id", referencedColumnName = "id")), inverseJoinColumns = arrayOf(JoinColumn(name = "company_id", referencedColumnName = "id")))
-        lateinit var companies: Set<Company>
+        lateinit var companies: List<Company>
 
 
 //        @OneToMany(mappedBy = "location", cascade = arrayOf(CascadeType.ALL), orphanRemoval = true)
@@ -29,8 +29,7 @@ data class Location(
 
         fun toDTO() = LocationDTO(
                 id = id,
-                name = name,
-                companies = companies
+                name = name
         )
 
         fun updateLocation(requestLocationDTO: RequestLocationDTO) : Location

@@ -29,8 +29,8 @@ data class Company(
 
 ){
 
-        @ManyToMany(mappedBy = "company")
-        lateinit var location: Set<Location>
+//        @ManyToMany(mappedBy = "company")
+//        lateinit var location: Set<Location>
 //        @OneToMany(mappedBy = "company")
 //        lateinit var companyLocation: Set<CompanyLocation>
 

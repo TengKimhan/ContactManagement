@@ -29,7 +29,7 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	implementation("com.oracle.ojdbc:ojdbc8:19.3.0.0")
+	runtimeOnly("com.oracle.ojdbc:ojdbc8:19.3.0.0")
 	implementation("org.liquibase:liquibase-core")
 	runtimeOnly("com.h2database:h2")
 	implementation ("com.github.javafaker:javafaker:1.0.2")

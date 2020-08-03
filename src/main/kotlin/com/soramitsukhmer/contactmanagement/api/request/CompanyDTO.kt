@@ -40,5 +40,7 @@ data class RequestCompanyWithStaffsDTO(
         @field:NotEmpty var phone: String,
         var webUrl: String?,
         @field:NotNull var status: Long = 1,
-        @field:NotNull var staffs: List<RequestStaffDTO>
+        @field:NotNull var staffs: List<RequestStaffDTO>,
+        @field:NotNull var location: List<Long>
+
 )

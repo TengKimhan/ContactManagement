@@ -65,16 +65,21 @@ class CompanyService(
             throw FieldNotFoundException(Status::class.simpleName.toString(), "$reqCompanyDTO.status")
         }
         // Create Company
+
         // Result Company ID
-        val company = Company()
+
+        val companyLocationList = mutableListOf<CompanyLocation>()
+        val company = Company.fromReqDTO(reqCompanyDTO, status)
+
         locationRepository.findAllById(reqCompanyDTO.locations).map {
             val companyLocation = CompanyLocation().apply {
                 this.company = company
                 this.location = it
             }
             companyLocationRepository.save(companyLocation)
+            companyLocationList.add(companyLocation)
         }
-        company.companyLocations
+        company.companyLocations = companyLocationList
 
         val newCompany = Company.fromReqDTO(reqCompanyDTO, status)
 
@@ -88,19 +93,21 @@ class CompanyService(
                 name = req.name,
                 phone = req.phone,
                 webUrl = req.webUrl,
-                status = req.status
+                status = req.status,
+                locations = req.location
         )
         val createdCompany = createCompany(companyDTO)
         req.staffs.map {staffDTO ->
             val company = companyRepository.findById(createdCompany.id).orElseThrow {
-                blah blah
+                throw RuntimeException("Created Company ID: [${createdCompany.id}] is not found.")
             }
             val status = statusRepository.findById(staffDTO.status).orElseThrow {
-                blah blah
+                throw RuntimeException("Staff status ID: [${staffDTO.status}] is not found.")
             }
             val staff = Staff.fromReqDTO(staffDTO, company, status)
             staffRepository.save(staff)
         }
+        return "done"
     }
 
     fun updateCompany(id: Long, reqCompanyDTO: RequestCompanyDTO) : CompanyDTO{

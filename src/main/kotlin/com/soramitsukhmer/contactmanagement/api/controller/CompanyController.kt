@@ -3,6 +3,7 @@ package com.soramitsukhmer.contactmanagement.api.controller
 import com.soramitsukhmer.contactmanagement.api.request.CompanyDTO
 import com.soramitsukhmer.contactmanagement.api.request.FilterParamCompanyDTO
 import com.soramitsukhmer.contactmanagement.api.request.RequestCompanyDTO
+import com.soramitsukhmer.contactmanagement.api.request.RequestCompanyWithStaffsDTO
 import com.soramitsukhmer.contactmanagement.api.response.PageResponse
 import com.soramitsukhmer.contactmanagement.service.CompanyService
 import org.springframework.data.domain.Pageable
@@ -39,6 +40,11 @@ class CompanyController(
     fun createCompany(@Valid @RequestBody requestCompanyDTO: RequestCompanyDTO) : ResponseEntity<CompanyDTO>{
         return ResponseEntity.ok(companyService.createCompany(requestCompanyDTO))
     }
+
+//    @PostMapping
+//    fun createCompanyWithStaffs(@Valid @RequestBody requestCompanyWithStaffsDTO: RequestCompanyWithStaffsDTO) : ResponseEntity<CompanyDTO> {
+//        return ResponseEntity.ok(companyService.createCompanyWithStaffs(requestCompanyWithStaffsDTO))
+//    }
 
     @PutMapping("/{id}")
     fun updateCompany(@PathVariable id: Long, @Valid @RequestBody requestCompanyDTO: RequestCompanyDTO) : ResponseEntity<CompanyDTO>{
