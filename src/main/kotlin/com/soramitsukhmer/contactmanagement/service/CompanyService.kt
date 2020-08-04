@@ -5,6 +5,7 @@ import com.soramitsukhmer.contactmanagement.api.exception.FieldNotFoundException
 import com.soramitsukhmer.contactmanagement.api.request.*
 import com.soramitsukhmer.contactmanagement.api.response.PageResponse
 import com.soramitsukhmer.contactmanagement.domain.model.Company
+import com.soramitsukhmer.contactmanagement.domain.model.Company.Companion.fromReqDTO
 import com.soramitsukhmer.contactmanagement.domain.model.CompanyLocation
 import com.soramitsukhmer.contactmanagement.domain.model.Staff
 import com.soramitsukhmer.contactmanagement.domain.model.Status
@@ -59,34 +60,52 @@ class CompanyService(
         }.toDTO()
     }
 
-    fun createCompany(reqCompanyDTO: RequestCompanyDTO) : CompanyDTO{
-
+    fun createCompany(reqCompanyDTO: RequestCompanyDTO): CompanyDTO {
         val status = statusRepository.findById(reqCompanyDTO.status).orElseThrow{
-            throw FieldNotFoundException(Status::class.simpleName.toString(), "$reqCompanyDTO.status")
+            throw FieldNotFoundException(Company::status.name, "${reqCompanyDTO.status}")
         }
-        // Create Company
+        val reqCompany = fromReqDTO(reqCompanyDTO,status)
+        companyValidationService.validateUniquePhone(null, reqCompany.phone, reqCompany.name)
 
-        // Result Company ID
-
-        val companyLocationList = mutableListOf<CompanyLocation>()
-        val company = Company.fromReqDTO(reqCompanyDTO, status)
-
-        locationRepository.findAllById(reqCompanyDTO.locations).map {
+        val createdCompany = companyRepository.save(reqCompany)
+        createdCompany.companyLocations = locationRepository.findAllById(reqCompanyDTO.locations).map {
             val companyLocation = CompanyLocation().apply {
-                this.company = company
+                this.company = createdCompany
                 this.location = it
             }
             companyLocationRepository.save(companyLocation)
-            companyLocationList.add(companyLocation)
         }
-        company.companyLocations = companyLocationList
-
-        val newCompany = Company.fromReqDTO(reqCompanyDTO, status)
-
-        companyValidationService.validateUniquePhone(null, newCompany.phone, newCompany.name)
-
-        return companyRepository.save(newCompany).toDTO()
+        return createdCompany.toDTO()
     }
+
+//    fun createCompany(reqCompanyDTO: RequestCompanyDTO) : CompanyDTO{
+//
+//        val status = statusRepository.findById(reqCompanyDTO.status).orElseThrow{
+//            throw FieldNotFoundException(Status::class.simpleName.toString(), "$reqCompanyDTO.status")
+//        }
+//        // Create Company
+//
+//        // Result Company ID
+//
+//        val companyLocationList = mutableListOf<CompanyLocation>()
+//        val company = Company.fromReqDTO(reqCompanyDTO, status)
+//
+//        locationRepository.findAllById(reqCompanyDTO.locations).map {
+//            val companyLocation = CompanyLocation().apply {
+//                this.company = company
+//                this.location = it
+//            }
+//            companyLocationRepository.save(companyLocation)
+//            companyLocationList.add(companyLocation)
+//        }
+//        company.companyLocations = companyLocationList
+//
+//        val newCompany = Company.fromReqDTO(reqCompanyDTO, status)
+//
+//        companyValidationService.validateUniquePhone(null, newCompany.phone, newCompany.name)
+//
+//        return companyRepository.save(newCompany).toDTO()
+//    }
 
     fun createCompanyWithStaffs(req: RequestCompanyWithStaffsDTO) : String{
         val companyDTO = RequestCompanyDTO(

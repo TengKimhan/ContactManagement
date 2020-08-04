@@ -42,8 +42,8 @@ class CompanyController(
     }
 
 //    @PostMapping
-//    fun createCompanyWithStaffs(@Valid @RequestBody requestCompanyWithStaffsDTO: RequestCompanyWithStaffsDTO) : ResponseEntity<CompanyDTO> {
-//        return ResponseEntity.ok(companyService.createCompanyWithStaffs(requestCompanyWithStaffsDTO))
+//    fun createCompanyWithStaffs(@Valid @RequestBody requestCompanyWithStaffsDTO: RequestCompanyWithStaffsDTO) : String {
+//        return companyService.createCompanyWithStaffs(requestCompanyWithStaffsDTO)
 //    }
 
     @PutMapping("/{id}")

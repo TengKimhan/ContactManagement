@@ -38,7 +38,7 @@ data class Company(
 //        @ManyToMany(mappedBy = "companies")
 //        var location: List<Location> = mutableListOf<Location>()
 
-        @OneToMany(mappedBy = "company")
+        @OneToMany(mappedBy = "company", fetch = FetchType.EAGER)
         lateinit var companyLocations: List<CompanyLocation>
 
         @ManyToOne
